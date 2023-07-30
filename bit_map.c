@@ -2,6 +2,8 @@
 #include "bit_map.h"
 #include <stdio.h>
 #include <stdint.h>
+#include <math.h> 
+#include <stddef.h>
 #include <stdlib.h>
 
 // returns the number of bytes to store bits booleans
@@ -16,8 +18,22 @@ void BitMap_init(BitMap* bit_map, int num_bits, uint8_t* buffer){
   bit_map->buffer_size=BitMap_getBytes(num_bits);
 }
 
+int BitMap_checkfree(uint8_t* buffer, size_t portion){
+  return (buffer[portion / 8] |=  (1 << (portion % 8)) == 0);
+}
+
+void BitMap_setbyte(uint8_t* buffer, size_t portion){
+        buffer[portion / 8] |=  (1 << (portion % 8));
+}
+
+void BitMap_setchunk(uint8_t* buffer,int start, int chunk){
+  for(int i = start; i < chunk + start; i++){
+    BitMap_setbyte(buffer,i);
+  }
+}
 // set the byte bit_num in the bitmap
 // status= 0 or 1
+//DEPRECATED, USING SETBYTE
 void BitMap_setBit(BitMap* bit_map, int bit_num, int status){
   // get byte
   if(status != 0 && status != 1){
@@ -42,7 +58,7 @@ void BitMap_setall(BitMap* bit_map,int status){
 }
 
 void BitMap_printall(BitMap* bit_map){
-    for(int i = 0; i < bit_map->buffer_size * 8; i++  ){
+    for(int i = 0; i < 256; i++  ){
       printf("%d", BitMap_bit(bit_map,i) );
     }
       printf("\n ---END OF BITMAP--- \n\n");
@@ -55,7 +71,7 @@ int BitMap_bit(const BitMap* bit_map, int bit_num){
   int bit_in_byte=byte_num&0x03;
   return (bit_map->buffer[byte_num] & (1<<bit_in_byte))!=0;
 }
-
+ /*
 int main() {
     int BITMAPSIZE = 256; //buffer size is bitmap/8
     BitMap bit_map;
@@ -82,4 +98,4 @@ int main() {
     return 0;
 
 
-}
+}*/

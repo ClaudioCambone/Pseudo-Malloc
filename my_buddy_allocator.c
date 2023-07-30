@@ -35,6 +35,16 @@ void mybuddy_init (mybuddy *buddy_alloc,char *memory, uint8_t *buffer){
     }
 }
 
+// TO-DO 
+void balloc(mybuddy *buddy_alloc, int size){
+    if( size > MEMORYSIZE)
+        perror("memory requested overflow available");
+    int nec_level = MAXLEVELS - (int) ((log2(size))) + 1; 
+    printf("approssimo per eccesso?? %d", nec_level);
+    
+    
+}
+
 void printbuddy(mybuddy *buddyalloc){
     printf("BITMAP PRINT \n");
     BitMap_printall(&buddyalloc->bitmap);
@@ -48,12 +58,18 @@ void printbuddy(mybuddy *buddyalloc){
 int main(){
     char memory[MEMORYSIZE];
     //TESTING TIME
-    uint8_t buffer[2^MAXLEVELS + 1]; // Adjust the size based on your requirements
+    uint8_t buffer[2^MAXLEVELS + 1]; 
     mybuddy buddy;
     mybuddy_init(&buddy,memory,buffer);
     BitMap_setall(&buddy.bitmap,0); 
-    BitMap_setBit(&buddy.bitmap, 2097149, 1);
+    //BitMap_setBit(&buddy.bitmap, 2097149, 1);
     // BitMap_setBit(&buddy.bitmap, 9, 1);
     //BitMap_setBit(&buddy.bitmap, 3, 1);
+    //BitMap_setbyte(buffer,32);
+    BitMap_setchunk(buffer,16,64);
     printbuddy(&buddy);
+
+    int result = BitMap_checkfree(buffer,8);
+    printf("risultato %d",result);
+    balloc(&buddy,1024);
 }

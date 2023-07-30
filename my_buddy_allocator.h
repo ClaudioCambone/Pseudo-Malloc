@@ -7,6 +7,7 @@
 
 
 typedef struct mybuddy{
+    int idx; //index of the buddy in the tree
     BitMap bitmap;
     char *memory; //memory size
     int num_levels;
@@ -18,4 +19,7 @@ void mybuddy_init (mybuddy *buddy_alloc, char *bitmap, uint8_t *buffer);
 
 //print all the data relative the buddy
 void printbuddy(mybuddy *buddyalloc);
+
+//alloc size space using the smallest buddy possible
+void balloc(mybuddy *buddy_alloc, int size);
 

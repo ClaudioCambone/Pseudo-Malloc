@@ -22,11 +22,22 @@ int BitMap_checkfree(uint8_t* buffer, size_t portion){
   return (buffer[portion / 8] |=  (1 << (portion % 8)) == 0);
 }
 
+int BitMap_checkchunk(uint8_t* buffer,int start, int chunk){
+  int result;
+  for(int i = start; i < chunk + start; i++){
+    if(BitMap_checkfree(buffer,i))
+      return -1;
+  }
+  return 0;
+}
+
 void BitMap_setbyte(uint8_t* buffer, size_t portion){
         buffer[portion / 8] |=  (1 << (portion % 8));
 }
 
 void BitMap_setchunk(uint8_t* buffer,int start, int chunk){
+  start = (start / 8) * 8;
+  chunk = BitMap_getBytes(chunk) * 8;
   for(int i = start; i < chunk + start; i++){
     BitMap_setbyte(buffer,i);
   }
@@ -59,7 +70,7 @@ void BitMap_setall(BitMap* bit_map,int status){
 
 void BitMap_printall(BitMap* bit_map){
     for(int i = 0; i < 256; i++  ){
-      printf("%d", BitMap_bit(bit_map,i) );
+      printf("%d numero %d \n", BitMap_bit(bit_map,i),i );
     }
       printf("\n ---END OF BITMAP--- \n\n");
 }

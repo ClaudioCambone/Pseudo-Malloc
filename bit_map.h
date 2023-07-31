@@ -41,6 +41,9 @@ void BitMap_setbyte(uint8_t* buffer, size_t portion);
 void BitMap_setchunk(uint8_t* buffer,int start, int chunk);
 
 
+int BitMap_checkchunk(uint8_t* buffer,int start, int chunk);
+
+
 
 
 

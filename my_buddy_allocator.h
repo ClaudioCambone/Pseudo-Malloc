@@ -21,5 +21,11 @@ void mybuddy_init (mybuddy *buddy_alloc, char *bitmap, uint8_t *buffer);
 void printbuddy(mybuddy *buddyalloc);
 
 //alloc size space using the smallest buddy possible
-void balloc(mybuddy *buddy_alloc, int size);
+void *balloc(mybuddy *buddy_alloc, int size);
+
+int parentIdx(int idx);
+
+int buddyIdx(int idx);
+
+int levelIdx(size_t idx);
 

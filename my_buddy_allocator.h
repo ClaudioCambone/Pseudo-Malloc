@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include "bit_map.h"
 
-#define MAXLEVELS 20 // 2^20 buddies
-#define MEMORYSIZE 1024*1024 //1MB
+#define BUFFER_SIZE (1024*1024)
+#define MAXLEVELS 20
+#define MEMORYSIZE (1024*1024)
 
 
 typedef struct mybuddy{
@@ -11,7 +12,6 @@ typedef struct mybuddy{
     BitMap bitmap;
     char *memory; //memory size
     int num_levels;
-    size_t num_nodes[MAXLEVELS + 1];
 }mybuddy;
 
 //initialize the buddy using the bitmap
@@ -23,9 +23,22 @@ void printbuddy(mybuddy *buddyalloc);
 //alloc size space using the smallest buddy possible
 void *balloc(mybuddy *buddy_alloc, int size);
 
+//return the index of the father of a given buddy
 int parentIdx(int idx);
 
+//return the index of brother of a given buddy
 int buddyIdx(int idx);
 
+//return the lv_idx needed to allocate size bits (e.g. 1025 returns 9 --> memorysize/2^9 = 2048)
 int levelIdx(size_t idx);
+
+//returns the idx of the first free buddy
+int mybuddy_getFree(BitMap* bit_map, int level);
+
+//returns the idx of the left child of a parent
+int leftchild(int parentindx);
+
+//returns the idx of the right child of a parent
+int rightchild(int parentindx);
+
 

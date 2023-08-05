@@ -5,7 +5,7 @@
 #define MEMORYSIZE (1024*1024)
 #define MAXLEVELS 9
 #define NUMBUDDIES 1 << MAXLEVELS
-#define BUFFER_SIZE ((NUMBUDDIES + 7) << 3)
+#define BUFFER_SIZE 4096
 
 
 typedef struct mybuddy{

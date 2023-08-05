@@ -32,14 +32,14 @@ int rightchild(int parentindx) {
 
 int mybuddy_getNumBuddies(const BitMap* bit_map, int level) {
     int total_num_bits = bit_map->num_bits;
-    int buddy_size = 1 << level; // Calculate the size of the buddy at the specified level
+    int buddy_size = 1 << (MAXLEVELS - level); // Calculate the size of the buddy at the specified level
 
     int num_buddies = total_num_bits / buddy_size;
     return num_buddies;
 }
 
 void mybuddy_init (mybuddy *buddy_alloc,char *memory, uint8_t *buffer){
-    int num_bits = (1 <<MAXLEVELS) -1; //CALCOLATE NUM_BITS REQUIRED TO REPRESENT A TREE WITH MAXLEVELS levels (like pow(2,maxlevels +1) -1)
+    int num_bits = (1 << MAXLEVELS); //CALCOLATE NUM_BITS REQUIRED TO REPRESENT A TREE WITH MAXLEVELS levels (like pow(2,maxlevels +1) -1)
     BitMap_init(&buddy_alloc->bitmap,num_bits,buffer);
     buddy_alloc->memory = memory;
     buddy_alloc->num_levels = MAXLEVELS;
@@ -52,9 +52,9 @@ void mybuddy_init (mybuddy *buddy_alloc,char *memory, uint8_t *buffer){
 int mybuddy_getFree(BitMap* bit_map, int level) {
   int start = (1 << level) - 1;
   int end = (1 << (level + 1)) - 1;
-  for(int i = start; i < end; i++) {
-    if(BitMap_bit(bit_map, i) == 0) {
-      printf("Free buddy at level %d, It has index %d in the BitMap\n", level, i);
+  for(int i = start; i <= end; i++) {
+    if(BitMap_bit(bit_map, i) == FREE) {
+      printf("Free buddy at level %d, It has index %d in the BitMap \n\n", level, i);
       return i;
     }
   }
@@ -64,7 +64,7 @@ int mybuddy_getFree(BitMap* bit_map, int level) {
 
 // TO-DO 
 int mybuddy_allocBuddy(mybuddy *buddy_alloc, int nec_level){
-    if( 1 << nec_level > 1 << MAXLEVELS){
+    if( (1 << nec_level) > (1 << MAXLEVELS)){
         perror("memory requested overflow available");
         return -1;
     }
@@ -76,29 +76,33 @@ int mybuddy_allocBuddy(mybuddy *buddy_alloc, int nec_level){
     //int numbuddies =  (1 << nec_level) - 1;  
     //printf("num buddies %d level %d \n\n",numbuddies,nec_level);
     int idx = mybuddy_getFree(&buddy_alloc->bitmap,nec_level);   
-    if(idx != -1){
+    if(idx == -1){
 
-        BitMap_setBit(&buddy_alloc->bitmap,idx,1);
-        printf("memory allocated, buddy has index %d \n",idx);
-            return idx;
-    }
+      printf("N.A. Memory, cheching lv below \n\n");
+      int  parent =  mybuddy_allocBuddy(buddy_alloc, nec_level - 1);
 
-    printf("N.A. Memory, cheching lv below \n");
-    int  parent =  mybuddy_allocBuddy(buddy_alloc, nec_level - 1);
-
-    if(parent == -1){
+      if(parent == -1){
         //if no memory is available goes here
         printf("Not enough memory, abort allocBuddy \n");
         return -1;
-    }
-      BitMap_setBit(&buddy_alloc->bitmap,rightchild(parent),0);
+      }
+      else{
+      BitMap_setBit(&buddy_alloc->bitmap,parent,1);
       return leftchild(parent);
+      }
+        
+    }
+    else{
+      BitMap_setBit(&buddy_alloc->bitmap, idx , ALLOCATED);
+      printf("memory allocated, buddy has index %d \n",idx);
+      return idx;
+    }
 }
 
 void printbuddy(mybuddy *buddyalloc){
     printf("BITMAP PRINT \n");
     BitMap_printall(&buddyalloc->bitmap);
-    printf("BUFFER SIZE %d \n", buddyalloc->bitmap.buffer_size);
+    printf("BUFFER SIZE IN BYTE %d \n", buddyalloc->bitmap.buffer_size);
     printf("MEMORY SIZE %d \n", MEMORYSIZE);
     printf("NUMBITS %d \n", buddyalloc->bitmap.num_bits);
     printf("NUMLEVELS %d \n",buddyalloc->num_levels);
@@ -115,7 +119,6 @@ int main(){
     uint8_t buffer[BUFFER_SIZE]; 
     mybuddy buddy;
     mybuddy_init(&buddy,memory,buffer);
-    BitMap_setall(&buddy.bitmap,0); 
     //BitMap_setBit(&buddy.bitmap, 2097149, 1);
     //BitMap_setBit(&buddy.bitmap, 9, 1);
     //BitMap_setBit(&buddy.bitmap, 2049, 1);
@@ -130,28 +133,25 @@ int main(){
     //i = BuddyAllocator_getFreeBuddy(&buddy.bitmap, i);
 
     //mybuddy_allocBuddy(&buddy,0);
-      printbuddy(&buddy);
 
-
-    mybuddy_allocBuddy(&buddy,1);
-    mybuddy_allocBuddy(&buddy,1);
-    mybuddy_allocBuddy(&buddy,2);
-    mybuddy_allocBuddy(&buddy,2);
-    mybuddy_allocBuddy(&buddy,2);
-    mybuddy_allocBuddy(&buddy,2);
-
-
-
-
-
-  
-
-
-
-      //  mybuddy_allocBuddy(&buddy,524287);
+    printbuddy(&buddy);
+    
+    for( int i = 0; i < 8; i++){
+          mybuddy_allocBuddy(&buddy,3);
+    }
 
     printbuddy(&buddy);
 
+    /*
+    FOR TESTING PURPOSES
+    mybuddy_allocBuddy(&buddy,0);
+    mybuddy_allocBuddy(&buddy,1);
+    mybuddy_allocBuddy(&buddy,1);
+    mybuddy_allocBuddy(&buddy,2);
+    mybuddy_allocBuddy(&buddy,2);
+    mybuddy_allocBuddy(&buddy,2);
+
+    */
 
 }
 

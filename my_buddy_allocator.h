@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include "bit_map.h"
 
-#define BUFFER_SIZE (1024*1024)
-#define MAXLEVELS 20
 #define MEMORYSIZE (1024*1024)
+#define MAXLEVELS 9
+#define NUMBUDDIES 1 << MAXLEVELS
+#define BUFFER_SIZE ((NUMBUDDIES + 7) << 3)
 
 
 typedef struct mybuddy{

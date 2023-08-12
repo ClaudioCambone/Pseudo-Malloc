@@ -42,4 +42,21 @@ int leftchild(int parentindx);
 //returns the idx of the right child of a parent
 int rightchild(int parentindx);
 
+//returns a pointer to the memory address of a buddy
+void *mybuddy_getAddress(mybuddy *buddy_alloc,int off);
+
+//returns the offset given a buddy idx
+int mybuddy_getoffset(mybuddy *buddy_alloc,int level, int buddy_idx);
+
+//returns size of a buddy
+int mybuddy_getBuddysize(int level);
+
+//this function is the core of the program, 
+//it alloc the smallest buddy to manage size memory and returns a pointer to the memory address of the allocated buddy
+void *mybuddy_malloc(mybuddy *buddy_alloc, int size);
+
+//free buddy of a given index
+void mybuddy_Freebuddy(mybuddy *buddyalloc, int idx);
+
+
 

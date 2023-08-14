@@ -151,12 +151,15 @@ void mybuddy_Freebuddy(mybuddy *buddyalloc, int idx){
       //if both buddies as free merge into parent
       if(BitMap_bit(&buddyalloc->bitmap,left) == FREE && BitMap_bit(&buddyalloc->bitmap,right) == FREE){
         BitMap_setBit(&buddyalloc->bitmap,parent,FREE);
+        BitMap_setBit(&buddyalloc->bitmap,left,FREE);
+        BitMap_setBit(&buddyalloc->bitmap,right,FREE);
+
 
       }
       else
         break;
 
-      idx = parentIdx;
+      idx = parentIdx(idx);
     }
 }
 
@@ -204,6 +207,12 @@ int main(){
         printf("Allocated memory at address: %p\n", allocated_memory);
     }
   }
+      printbuddy(&buddy);
+        mybuddy_Freebuddy(&buddy,6);
+          printbuddy(&buddy);
+
+
+
 }
 
 

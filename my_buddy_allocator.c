@@ -2,10 +2,14 @@
 #include <assert.h>
 #include <math.h> 
 #include "my_buddy_allocator.h"
+#include "pseudo_malloc.h"
 #include <stdlib.h>
 
 // these are trivial helpers to support you in case you want
 // to do a bitmap implementation
+
+extern mybuddy buddy;
+
 
 int levelIdx(size_t size){
   return MAXLEVELS - (ceil(log2(size)));
@@ -138,7 +142,8 @@ void printbuddy(mybuddy *buddyalloc){
     printf("NUMLEVELS %d \n",buddyalloc->num_levels);
 
 }
-//TO-DO
+
+
 //free the buddy of a given index
 void mybuddy_Freebuddy(mybuddy *buddyalloc, int idx){
     assert(idx >= 0);
@@ -162,11 +167,10 @@ void mybuddy_Freebuddy(mybuddy *buddyalloc, int idx){
       idx = parentIdx(idx);
     }
 }
-
+/*TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING 
 
 int main(){
     char memory[MEMORYSIZE];
-    //TESTING TIME
     uint8_t buffer[BUFFER_SIZE]; 
     mybuddy buddy;
     mybuddy_init(&buddy,memory,buffer);
@@ -186,8 +190,7 @@ int main(){
     //mybuddy_allocBuddy(&buddy,0);
 
     printbuddy(&buddy);
-    /*
-    FOR TESTING PURPOSES
+
         for( int i = 0; i < 10; i++){
           mybuddy_allocBuddy(&buddy,3);
     }
@@ -199,7 +202,6 @@ int main(){
     mybuddy_allocBuddy(&buddy,2);
     mybuddy_allocBuddy(&buddy,2);
 
-    */
   for(int i = 0; i < 8; i++){
 
   void *allocated_memory = mybuddy_malloc(&buddy, 64); // Allocate 128 bytes
@@ -214,7 +216,4 @@ int main(){
 
 
 }
-
-
-
-
+*/

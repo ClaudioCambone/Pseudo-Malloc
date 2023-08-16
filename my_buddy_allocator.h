@@ -2,10 +2,8 @@
 #include <stdio.h>
 #include "bit_map.h"
 
-#define MEMORYSIZE (1024*1024)
-#define MAXLEVELS 9
-#define NUMBUDDIES 1 << MAXLEVELS
-#define BUFFER_SIZE 4096
+
+
 
 
 typedef struct mybuddy{
@@ -22,7 +20,7 @@ void mybuddy_init (mybuddy *buddy_alloc, char *bitmap, uint8_t *buffer);
 void printbuddy(mybuddy *buddyalloc);
 
 //alloc size space using the smallest buddy possible
-void *balloc(mybuddy *buddy_alloc, int size);
+int mybuddy_allocBuddy(mybuddy *buddy_alloc, int nec_level);
 
 //return the index of the father of a given buddy
 int parentIdx(int idx);

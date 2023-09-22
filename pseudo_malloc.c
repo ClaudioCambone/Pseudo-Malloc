@@ -13,7 +13,7 @@
 
 
 
-//Allocate memory of size
+//Allocate memory of size size 
 void *pseudo_malloc(size_t size){
     //IF SIZE > PAGE/4 DO MMAP, ELSE USE BUDDY ALLOC
     
@@ -32,6 +32,7 @@ void *pseudo_malloc(size_t size){
 
 }
 
+//Allocate n elements of size size and set all the contiguous blocks to 0
 void *pseudo_calloc( int size, int elem){
     void* ptr = pseudo_malloc(size * elem);
     memset(ptr , 0 , size * elem);

@@ -16,6 +16,7 @@ mybuddy buddy;
 //Allocate memory of size size
 void *pseudo_malloc(size_t size);
 
+//Allocate n elements of size size and set all the contiguous blocks to 0
 void *pseudo_calloc( int size, int elem);
 
 

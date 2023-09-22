@@ -138,7 +138,7 @@ int main() {
     malloc_free(ptr8,size);
 
 
-   //Test 9: Allocate a block using calloc nmap
+   //Test 9: Allocate a block using calloc mmap
     printf("\n\nTest 9: Allocate a block using calloc nmap\n");
     size = 4;
     elem = 300;

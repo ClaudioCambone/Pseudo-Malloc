@@ -16,5 +16,8 @@ mybuddy buddy;
 //Allocate memory of size size
 void *pseudo_malloc(size_t size);
 
+void *pseudo_calloc( int size, int elem);
+
+
 //free the pointed memory
-void free(void *ptr);
+void malloc_free(void *ptr,int size);

@@ -43,12 +43,12 @@ int mybuddy_getNumBuddies(const BitMap* bit_map, int level) {
 }
 
 void *mybuddy_getAddress(mybuddy *buddy_alloc,int off){
-  return (char *)buddy_alloc->memory + off;
+  return (void *)buddy_alloc->memory + off;
 }
 
 
 int mybuddy_getoffset(mybuddy *buddy_alloc,int level, int buddy_idx){
-  return buddy_idx * mybuddy_getBuddysize(level);
+  return (buddy_idx - ((1 << level) -1)) - mybuddy_getBuddysize(level);
 }
 
 int mybuddy_getBuddysize(int level){
@@ -71,7 +71,6 @@ int mybuddy_getFree(BitMap* bit_map, int level) {
   int end = (1 << (level + 1)) - 1;
   for(int i = start; i < end; i++) {
     if(BitMap_bit(bit_map, i) == FREE) {
-      printf("Buddy at level %d, It has index %d in the BitMap \n", level, i);
       return i;
     }
   }
@@ -103,7 +102,7 @@ int mybuddy_allocBuddy(mybuddy *buddy_alloc, int nec_level){
         return -1;
       }
       else{
-      BitMap_setBit(&buddy_alloc->bitmap,parent,1);
+      BitMap_setBit(&buddy_alloc->bitmap,parent,ALLOCATED);
       return leftchild(parent);
       }
         
@@ -121,13 +120,13 @@ void *mybuddy_malloc(mybuddy *buddy_alloc, int size){
   int level = levelIdx(size);
   int buddy_idx = mybuddy_allocBuddy(buddy_alloc,level);
   if(buddy_idx == -1){
-    printf("N.A. memory, cant alloc \n");
     return NULL;
   }
   else{
-    int off = mybuddy_getoffset(buddy_alloc,level,buddy_idx);
     //Return pointer to the allocated memory
-    return mybuddy_getAddress(buddy_alloc,off);
+    int* ptr = mybuddy_getAddress(buddy_alloc,mybuddy_getoffset(buddy_alloc,level,buddy_idx));
+    *ptr = buddy_idx;
+    return (void*) (ptr + 1);
   }
 
 
@@ -142,7 +141,6 @@ void printbuddy(mybuddy *buddyalloc){
     printf("NUMLEVELS %d \n",buddyalloc->num_levels);
 
 }
-
 
 //free the buddy of a given index
 void mybuddy_Freebuddy(mybuddy *buddyalloc, int idx){
@@ -166,54 +164,5 @@ void mybuddy_Freebuddy(mybuddy *buddyalloc, int idx){
 
       idx = parentIdx(idx);
     }
-}
-/*TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING TESTING 
-
-int main(){
-    char memory[MEMORYSIZE];
-    uint8_t buffer[BUFFER_SIZE]; 
-    mybuddy buddy;
-    mybuddy_init(&buddy,memory,buffer);
-    //BitMap_setBit(&buddy.bitmap, 2097149, 1);
-    //BitMap_setBit(&buddy.bitmap, 9, 1);
-    //BitMap_setBit(&buddy.bitmap, 2049, 1);
-    //BitMap_setbyte(buffer,32);
-    //BitMap_setchunk(buffer,2060,32);
-    //printbuddy(&buddy);
-    
-    //int result = BitMap_checkchunk(buffer, 44,63);
-    //printf("risultato %d",result);
-    //int i = levelIdx(1025); 
-    //printf("%d",i);
-    //i = BuddyAllocator_getFreeBuddy(&buddy.bitmap, i);
-
-    //mybuddy_allocBuddy(&buddy,0);
-
-    printbuddy(&buddy);
-
-        for( int i = 0; i < 10; i++){
-          mybuddy_allocBuddy(&buddy,3);
-    }
-
-    mybuddy_allocBuddy(&buddy,0);
-    mybuddy_allocBuddy(&buddy,1);
-    mybuddy_allocBuddy(&buddy,1);
-    mybuddy_allocBuddy(&buddy,2);
-    mybuddy_allocBuddy(&buddy,2);
-    mybuddy_allocBuddy(&buddy,2);
-
-  for(int i = 0; i < 8; i++){
-
-  void *allocated_memory = mybuddy_malloc(&buddy, 64); // Allocate 128 bytes
-    if (allocated_memory) {
-        printf("Allocated memory at address: %p\n", allocated_memory);
-    }
-  }
-      printbuddy(&buddy);
-        mybuddy_Freebuddy(&buddy,6);
-          printbuddy(&buddy);
-
-
 
 }
-*/

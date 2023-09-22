@@ -56,5 +56,4 @@ void *mybuddy_malloc(mybuddy *buddy_alloc, int size);
 //free buddy of a given index
 void mybuddy_Freebuddy(mybuddy *buddyalloc, int idx);
 
-
-
+void detachbuddy(mybuddy *buddyalloc, void* ptr);

@@ -22,15 +22,6 @@
     }
   }
 
-
-
-
-  // set the byte bit_num in the bitmap
-  // status= 0 or 1
-
-  void BitMap_setbyte(uint8_t* buffer, size_t portion){
-          buffer[portion / 8] |=  (1 << (portion % 8));
-  }
   void BitMap_setBit(BitMap* bit_map, int bit_num, int status){
     // get byte
     int byte_num = bit_num / 8;
@@ -71,37 +62,6 @@
     return (bit_map->buffer[byte_num] & (1 << bit_in_byte)) != 0;
   }
 
-
-  /*
-  int main() {
-      int BITMAPSIZE = 256; //buffer size is bitmap/8
-      BitMap bit_map;
-      uint8_t buffer[BITMAPSIZE]; // Adjust the size based on your requirements
-      int num_bits = BITMAPSIZE; // You can adjust the number of bits for testing
-
-    //SOME TESTING AND PRINTINGS 
-
-      BitMap_init(&bit_map, num_bits, buffer);
-      assert(bit_map.num_bits == num_bits);
-      assert(bit_map.buffer_size == BitMap_getBytes(num_bits));
-
-      printf("BUFFER SIZE in Byte %d \n", bit_map.buffer_size);
-
-      BitMap_setall(&bit_map,1);
-      BitMap_printall(&bit_map);
-
-      BitMap_setBit(&bit_map,32,0);
-
-      printf("bit num %d is %d \n", 32, BitMap_bit(&bit_map,32));
-
-          BitMap_printall(&bit_map);
-
-      return 0;
-
-
-  }*/
-
-
   /*UNUSED 
   int BitMap_checkfree(uint8_t* buffer, size_t portion){
     return (buffer[portion / 8] |=  (1 << (portion % 8)) == 0);
@@ -117,8 +77,6 @@
     }
     return 0;
   }
-
-
 
   void BitMap_setchunk(uint8_t* buffer,int start, int chunk){
     start = (start / 8) * 8;
@@ -157,5 +115,9 @@
 
       // If no free bit is found, return -1
       return -1;
+  }
+  
+  void BitMap_setbyte(uint8_t* buffer, size_t portion){
+          buffer[portion / 8] |=  (1 << (portion % 8));
   }
   */

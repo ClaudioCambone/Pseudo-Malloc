@@ -21,4 +21,4 @@ void *pseudo_calloc( int size, int elem);
 
 
 //free the pointed memory
-void malloc_free(void *ptr,int size);
+void malloc_free(void *ptr);

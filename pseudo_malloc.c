@@ -41,31 +41,12 @@ void *pseudo_calloc( int size, int elem){
 }
 
 
-//free the memory pointed
-void malloc_free(void *ptr,int size){
-    //i tried to implement a function working only with ptr as parameter but it didn't work
-     if (size < PAGESIZE/4){
-        int* index_ptr = ((int*)ptr) - 1;
-         // Adjust the pointer to point to the index
-        int idx = *index_ptr;
-        mybuddy_Freebuddy(&buddy,idx);
-        printf("\nmemory freed correctly with buddy allocator \n");
-
-    }
-    else{
-        munmap(ptr, *((int*)ptr));
-        printf("\n memory freed correctly with munmap \n");
-    }
-
-}
-
-/*
-
 void malloc_free(void *ptr) {
-    if (ptr >= (void*)memory && ptr < (void*)(memory + MEMORYSIZE * sizeof(char))) {
+     if (ptr >= (void *)memory && ptr < (void *)memory + MEMORYSIZE){
         int* index_ptr = ((int*)ptr) - 1;
         // Adjust the pointer to point to the index
         int idx = *index_ptr;
+        printf("indice");
         // Proceed to free the buddy or perform other necessary actions
     }
     else {
@@ -73,4 +54,3 @@ void malloc_free(void *ptr) {
         printf("\n memory freed correctly with munmap \n");
     }
 }
-*/

@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <sys/mman.h>
 #include <string.h>
+#include <stdlib.h>
 #include "my_buddy_allocator.h"
 #include "pseudo_malloc.h"
 #include "bit_map.h"
@@ -46,6 +47,10 @@ void *pseudo_calloc( int size, int elem){
 
 
 void malloc_free(void *ptr) {
+    if(ptr == NULL){
+        printf("\npointer is NULL\n");
+        return;
+    }
      if (ptr >= (void*)buddy.memory && ptr <(void*)buddy.memory + MEMORYSIZE){
         int* index_ptr = ((int*)ptr) - 1;
         // Adjust the pointer to point to the index

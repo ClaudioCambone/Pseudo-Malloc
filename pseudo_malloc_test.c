@@ -100,6 +100,7 @@ int main() {
     } 
 
         malloc_free(ptr6);
+        malloc_free(ptr6_1);
 
 
     //Test 7: Trying to allocate different portions of different size

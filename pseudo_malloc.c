@@ -19,12 +19,14 @@ void *pseudo_malloc(size_t size){
     
     if(size < PAGESIZE/4){
         //use buddy allocator
+        printf("\nusing buddy allocator \n");
         void *ptr = mybuddy_malloc(&buddy,size);
 
         return ptr;
     }
     else{
         //use mmap
+        printf("\nusing mmap \n");
         void *ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
         *((int *)ptr) = size;
         return ptr + sizeof(int);
@@ -42,15 +44,17 @@ void *pseudo_calloc( int size, int elem){
 
 
 void malloc_free(void *ptr) {
-     if (ptr >= (void *)memory && ptr < (void *)memory + MEMORYSIZE){
+     if (ptr >= (void*)buddy.memory && ptr <(void*)buddy.memory + MEMORYSIZE){
         int* index_ptr = ((int*)ptr) - 1;
         // Adjust the pointer to point to the index
         int idx = *index_ptr;
-        printf("indice");
+        mybuddy_Freebuddy(&buddy,idx);
+        printf("\nmemory freed correctly with Freebuddy \n");
         // Proceed to free the buddy or perform other necessary actions
     }
     else {
+        
         munmap(ptr - sizeof(int), *((int*)(ptr - sizeof(int))));
-        printf("\n memory freed correctly with munmap \n");
+        printf("\nmemory freed correctly with munmap \n");
     }
 }

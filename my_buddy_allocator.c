@@ -48,7 +48,8 @@ void *mybuddy_getAddress(mybuddy *buddy_alloc,int off){
 
 
 int mybuddy_getoffset(mybuddy *buddy_alloc,int level, int buddy_idx){
-  return (buddy_idx - ((1 << level) -1)) - mybuddy_getBuddysize(level);
+  int idx_lv = buddy_idx - ((1 << level) - 1);
+  return idx_lv * mybuddy_getBuddysize(level);
 }
 
 int mybuddy_getBuddysize(int level){
@@ -124,7 +125,8 @@ void *mybuddy_malloc(mybuddy *buddy_alloc, int size){
   }
   else{
     //Return pointer to the allocated memory
-    int* ptr = mybuddy_getAddress(buddy_alloc,mybuddy_getoffset(buddy_alloc,level,buddy_idx));
+    int off =  mybuddy_getoffset(buddy_alloc,level,buddy_idx);
+    int* ptr = (int*)mybuddy_getAddress(buddy_alloc,off);
     *ptr = buddy_idx;
     return (void*) (ptr + 1);
   }

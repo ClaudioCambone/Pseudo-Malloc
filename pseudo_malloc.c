@@ -38,8 +38,10 @@ void *pseudo_malloc(size_t size){
 void *pseudo_calloc( int size, int elem){
     void* ptr = pseudo_malloc(size * elem);
     memset(ptr , 0 , size * elem);
-
-    return ptr;
+    if(ptr)
+        return ptr;
+    else 
+        return NULL;
 }
 
 

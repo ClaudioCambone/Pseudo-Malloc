@@ -8,15 +8,15 @@ int main() {
     uint8_t buffer[BUFFER_SIZE];  // Adjust this size as needed
     mybuddy_init(&buddy,memory,buffer);
 
-
+    
     // Test 1: Allocate using buddy allocator
     printbuddy(&buddy);
     printf("Test 1: Allocate using buddy allocator\n");
     int size = 64;
     void *ptr1 = pseudo_malloc(size);
     if (ptr1) {
-        printf("Allocated memory using buddy allocator at address: %p\n", ptr1);
-        malloc_free(ptr1,size); // Free a buddy to reuse it
+        printf("Allocated memory at address: %p\n", ptr1);
+        malloc_free(ptr1); // Free a buddy to reuse it
     }
     else {
         printf("Failed to allocate memory\n");
@@ -28,8 +28,8 @@ int main() {
     size = 4096;
     void *ptr2 = pseudo_malloc(size);
     if (ptr2) {
-        printf("Allocated memory using buddy allocator at address: %p\n", ptr2);
-        malloc_free(ptr2,size); // Free a buddy to reuse it
+        printf("Allocated memory at address: %p\n", ptr2);
+        malloc_free(ptr2); // Free a buddy to reuse it
     }
     else {
         printf("Failed to allocate memory\n");
@@ -42,8 +42,8 @@ int main() {
     size = 128;
     void *ptr3 = pseudo_malloc(size);
     if (ptr3) {
-        printf("Allocated memory using buddy allocator at address: %p\n", ptr3);
-        malloc_free(ptr3,size); // Free a buddy to reuse it
+        printf("Allocated memory at address: %p\n", ptr3);
+        malloc_free(ptr3); // Free a buddy to reuse it
     }
     else {
         printf("Failed to allocate memory\n");
@@ -55,8 +55,8 @@ int main() {
     size = 1024;
     void *ptr4 = pseudo_malloc(size);
      if (ptr4) {
-        printf("Allocated memory using buddy allocator at address: %p\n", ptr4);
-        malloc_free(ptr4,size);
+        printf("Allocated memory at address: %p\n", ptr4);
+        malloc_free(ptr4);
 
     }
     else {
@@ -70,8 +70,8 @@ int main() {
     size = 512;
     void *ptr5 = pseudo_malloc(size);
     if (ptr5) {
-        printf("Allocated memory using buddy allocator at address: %p\n", ptr5);
-        malloc_free(ptr5,size);
+        printf("Allocated memory at address: %p\n", ptr5);
+        malloc_free(ptr5);
     }
     else {
         printf("Failed to allocate memory\n");
@@ -85,7 +85,7 @@ int main() {
     size = 512;
     void *ptr6 = pseudo_malloc(size);
     if (ptr6) {
-        printf("Allocated memory using buddy allocator at address: %p\n", ptr6);
+        printf("Allocated memory at address: %p\n", ptr6);
     }
     else {
         printf("Failed to allocate memory\n");
@@ -99,7 +99,7 @@ int main() {
         printf("Failed to allocate memory\n");
     } 
 
-        malloc_free(ptr6,size);
+        malloc_free(ptr6);
 
 
     //Test 7: Trying to allocate different portions of different size
@@ -107,7 +107,7 @@ int main() {
     size = 512;
     void *ptr7 = pseudo_malloc(size);
     if (ptr7) {
-        printf("Allocated memory using buddy allocator at address: %p\n", ptr7);
+        printf("Allocated memory at address: %p\n", ptr7);
     }
     else {
         printf("Failed to allocate memory\n");
@@ -135,7 +135,7 @@ int main() {
     else {
         printf("Failed to allocate memory\n");
     } 
-    malloc_free(ptr8,size);
+    malloc_free(ptr8);
 
 
    //Test 9: Allocate a block using calloc mmap
@@ -144,11 +144,11 @@ int main() {
     elem = 300;
     void *ptr9= pseudo_calloc(size,elem);
     if (ptr9) {
-        printf("Allocated memory using buddy allocator at address: %p, all the %d block of size %d have been set to 0\n", ptr9,elem,size);
+        printf("Allocated memory using mmap at address: %p, all the %d block of size %d have been set to 0\n", ptr9,elem,size);
     }
     else {
         printf("Failed to allocate memory\n");
     } 
-    malloc_free(ptr9,size * elem);
+    malloc_free(ptr9);
     return 0;
 }
